@@ -25,7 +25,7 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
-                        withDockerRegistry(credentialsId: 'dockerhub-creds', toolName: 'docker') {
+                        withDockerRegistry(credentialsId: 'dockerhub-creds', toolName: 'dockerhub-creds') {
                             sh "docker build -t ${DOCKER_IMAGE} ."
                         }
                     }
@@ -116,7 +116,7 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
-                        withDockerRegistry(credentialsId: 'dockerhub-creds', toolName: 'docker') {
+                        withDockerRegistry(credentialsId: 'dockerhub-creds', toolName: 'dockerhub-creds') {
                             sh "docker build -t ${DOCKER_IMAGE} ."
                         }
                     }
