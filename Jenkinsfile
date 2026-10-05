@@ -4,13 +4,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
+        DOCKER_IMAGE = "simbudevops/devopsexamapp:latest"
     }
 
     stages {
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/KastroVKiran/devops-exam-app.git', 
+                git url: 'https://github.com/simbudevops/3-tier-application.git', 
                     branch: 'master'
             }
         }
@@ -27,7 +27,7 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
-                        withDockerRegistry(credentialsId: 'docker-creds', toolName: 'docker') {
+                        withDockerRegistry(credentialsId: 'dockerhub-creds', toolName: 'docker') {
                             sh "docker build -t ${DOCKER_IMAGE} ."
                         }
                     }
@@ -98,13 +98,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
+        DOCKER_IMAGE = "simbudevops/devopsexamapp:latest"
     }
 
     stages {
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/KastroVKiran/devops-exam-app.git', 
+                git url: 'https://github.com/simbudevops/3-tier-application.git', 
                     branch: 'master'
             }
         }
@@ -121,7 +121,7 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
-                        withDockerRegistry(credentialsId: 'docker-creds', toolName: 'docker') {
+                        withDockerRegistry(credentialsId: 'dockerhub-creds', toolName: 'docker') {
                             sh "docker build -t ${DOCKER_IMAGE} ."
                         }
                     }
@@ -206,10 +206,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
-        EKS_CLUSTER = "devopsapp"
+        DOCKER_IMAGE = "simbudevops/devopsexamapp:latest"
+        EKS_CLUSTER = "simbu-cluster"
         K8S_NAMESPACE = "devopsexamapp"
-        AWS_REGION = "us-west-2"  // Update to your region
+        AWS_REGION = "ap-south-1"  // Update to your region
     }
 
     stages {
@@ -234,7 +234,7 @@ pipeline {
                         # Create image pull secret
                         kubectl create secret docker-registry dockerhub-creds \\
                             --docker-server=https://index.docker.io/v1/ \\
-                            --docker-username=kastrov \\
+                            --docker-username=simbudevops \\
                             --docker-password=\$(cat /var/jenkins_home/docker-creds/password) \\
                             --namespace=${K8S_NAMESPACE} \\
                             --dry-run=client -o yaml | kubectl apply -f -
