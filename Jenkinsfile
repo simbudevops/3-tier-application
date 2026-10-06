@@ -1,16 +1,11 @@
 pipeline {
     agent any
 
-    parameters {
-        booleanParam(name: 'DEPLOY_EKS', defaultValue: false,
-                     description: 'Tick to also deploy to AWS EKS (cluster must already exist)')
-    }
-
     environment {
         DOCKER_IMAGE  = "simbudevops/devopsexamapp:latest"
-        EKS_CLUSTER   = "simbu-cluster"     // change to your real cluster name
+        EKS_CLUSTER   = "simbu-cluster"    
         K8S_NAMESPACE = "devopsexamapp"
-        AWS_REGION    = "ap-south-1"        // change to your cluster's region
+        AWS_REGION    = "ap-south-1"        
     }
 
     stages {
@@ -82,9 +77,6 @@ pipeline {
         }
 
         stage('Deploy to EKS') {
-            when {
-                expression { return params.DEPLOY_EKS == true }
-            }
             steps {
                 withCredentials([
                     [$class: 'AmazonWebServicesCredentialsBinding',
